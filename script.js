@@ -1,111 +1,87 @@
-/* Assignment 03: Starting a Todo List App
- *
- * You are going to build the brains of a simple Todo List application
- * in JavaScript. You don't have to worry about the look of the app for now.
- * We will make it look awesome in Assignment 04.
- *
- * For now, we'll focus on giving the application the following features:
- * 1. Add a new todo item
- * 2. Delete a todo item
- * 3. Mark a todo item as completed
- * 4. Delete a todo item
- * 5. Clear all completed todos
- *
- * The following code is the starting point for this assignment.
- *
- * You will have to write the code to initialise the todoItems array and
- * for the functions below.
- *
- * 1. addToDoItem(text)
- * 2. removeToDoItem(todoId)
- * 3. markToDoItemAsCompleted(todoId)
- * 4. deleteToDoItem(todoId)
- * 5. clearCompletedTasks()
- *
- * YOU MUST NOT CHANGE ANY OF THE FUNCTION NAMES OR THE AUTOMATED TESTS WILL FAIL
- *
- * As you write each function, press on the "Run Tests" button in the browser
- * to run the automated tests and check your work.
- *
- * You can also add your own tests and debug statements at the bottom of this file.
- *
- */
-
-
 // Data storage - Initialize the array of To Do items
-//
-// NOTE:
-//
-// - You must use the following object literal structure when creating new todo items
-// - The ID (id) of each todo item must be unique (you can use the length of the array as the ID or generate a random number)
-//
-// {
-//   id: 0,
-//   text: "This is a todo item",
-//   completed: false,
-// }
+const todoItems = [];
 
-// Initialise an empty array with the variable name todoItems
-
-// Function to add a todo to the list
-// It should accept a string as a parameter (text of the todo item)
-// and it should add a new todo item to the todoItems array
-// The todo item should have the structure shown above
-// It's really important that you have a unique ID for each todo item that you push onto the array
-// the function does not need to return anything
+// Function to add a todo item
 function addToDoItem(text) {
-  // Implement the logic to add a task here
+  if (typeof text !== 'string' || text.trim() === '') {
+    console.log('Error: Please provide a valid non-empty string for the todo item.');
+    return;
+  }
 
-  console.log("NOT YET IMPLEMENTED"); // Remove this line when you start working on the function
+  const newToDo = {
+    id: generateUniqueId(),
+    text: text,
+    completed: false,
+  };
+
+  todoItems.push(newToDo);
 }
 
-// Function to remove a todo to the list
-// It should accept a number as a parameter (id of the todo item)
-// Loop through the array of todos, and when you find the todo item with the id
-// that matches the id passed to the function, remove it from the array
-// the function does not need to return anything
+// Function to remove a todo item by ID
 function removeToDoItem(todoId) {
-  // Implement the logic to add a task here
+  if (typeof todoId !== 'number' || todoId < 0) {
+    console.log('Error: Please provide a valid positive number as the todo item ID.');
+    return;
+  }
 
-  console.log("NOT YET IMPLEMENTED"); // Remove this line when you start working on the function
+  const index = findIndexById(todoId);
+  if (index === -1) {
+    console.log('Error: Todo item with the specified ID does not exist.');
+    return;
+  }
+
+  todoItems.splice(index, 1);
 }
 
-// Function to mark a task as completed
-// It should accept a number as a parameter (id of the todo item)
-// Loop through the array of todos, and when you find the todo item with the id
-// that matches the id passed to the function, set its completed property to true
-// the function does not need to return anything
+// Function to mark a todo item as completed by ID
 function markToDoItemAsCompleted(todoId) {
-  // Implement the logic to mark a task as completed here
+  if (typeof todoId !== 'number' || todoId < 0) {
+    console.log('Error: Please provide a valid positive number as the todo item ID.');
+    return;
+  }
 
-  console.log("NOT YET IMPLEMENTED"); // Remove this line when you start working on the function
+  const index = findIndexById(todoId);
+  if (index === -1) {
+    console.log('Error: Todo item with the specified ID does not exist.');
+    return;
+  }
+
+  todoItems[index].completed = true;
 }
 
-// Function to delete a task from the array
-// It should accept a number as a parameter (id of the todo item)
-// Loop through the array of todos, and when you find the todo item with the id
-// that matches the id passed to the function, remove it from the array
-// the function does not need to return anything, though you can return
-// true or false depending on whether the item was successfully deleted
+// Function to delete a todo item by ID
 function deleteToDoItem(todoId) {
-  // Implement the logic to remove a task here
+  if (typeof todoId !== 'number' || todoId < 0) {
+    console.log('Error: Please provide a valid positive number as the todo item ID.');
+    return;
+  }
 
-  console.log("NOT YET IMPLEMENTED"); // Remove this line when you start working on the function
+  const index = findIndexById(todoId);
+  if (index === -1) {
+    console.log('Error: Todo item with the specified ID does not exist.');
+    return;
+  }
+
+  todoItems.splice(index, 1);
 }
 
 // Function to clear all completed tasks
-// Loop through the array of todos, and when you find a todo item that is marked
-// as completed, remove it completely from the array
 function clearCompletedTasks() {
-  // Implement the logic to clear completed tasks here
-
-  console.log("NOT YET IMPLEMENTED"); // Remove this line when you start working on the function
+  for (let i = todoItems.length - 1; i >= 0; i--) {
+    if (todoItems[i].completed) {
+      todoItems.splice(i, 1);
+    }
+  }
 }
 
-// You can write your own tests here if you would like to test
-// your code before using the automated tests
-// For example, you could run:
-//  addToDoItem("Test ToDo"); // This should add a new todo item to the array
-//  console.log(todoItems); // This should show the todo item you added
-//  removeToDoItem(0); // This should remove the todo item with ID 0 from the array
-//  markToDoItemAsCompleted(0); // This should mark the todo item with ID 0 as completed
+// Helper function to generate a unique ID
+function generateUniqueId() {
+  // You can use a more sophisticated ID generation method
+  return new Date().getTime();
+}
+
+// Helper function to find an item's index by ID
+function findIndexById(id) {
+  return todoItems.findIndex(todo => todo.id === id);
+}
+
